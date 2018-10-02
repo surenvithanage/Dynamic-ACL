@@ -15,6 +15,16 @@ import java.sql.SQLException;
  */
 public class DBConnection {
     public static Connection createConnection() throws ClassNotFoundException, SQLException{
+//      Connection Through MariaDB        
+        
+//      static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
+//      static final String url = "jdbc:mariadb://192.168.1.159/login2";
+//       
+//      Database credentials
+//      static final String username = "mytest";
+//      static final String password = "password";
+//      Class.forName("org.mariadb.jdbc.Driver");
+
         String url = "jdbc:mysql://localhost:3306/loginepic";
         String username = "root";
         String password = "";

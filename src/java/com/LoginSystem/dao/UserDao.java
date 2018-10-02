@@ -7,6 +7,7 @@ package com.LoginSystem.dao;
 
 import com.LoginSystem.bean.FunctionBean;
 import com.LoginSystem.bean.LoginBean;
+import com.LoginSystem.bean.RoleBean;
 import com.LoginSystem.bean.UserBean;
 import com.LoginSystem.util.DBConnection;
 import com.LoginSystem.util.Function;
@@ -60,23 +61,34 @@ public class UserDao{
   
   public List<UserBean> listAllUsers() throws SQLException{
       List<UserBean> listUsers = new ArrayList<>();
-      
       String sql = "SELECT * FROM user";
       connect();
-
       statement = con.createStatement();
-
       ResultSet resultSet = statement.executeQuery(sql);
-      
       while(resultSet.next()){
           UserBean userBean = new UserBean(resultSet.getString("userid"), resultSet.getString("roleid"), resultSet.getString("username"), resultSet.getString("password"));
           listUsers.add(userBean);
       }
-      
       statement.close();
       resultSet.close();
       con.close();
       return listUsers;
+  }
+  
+  public ArrayList<RoleBean> listAllRoles() throws SQLException{
+      ArrayList<RoleBean> listRoles = new ArrayList<>();
+      String sql = "SELECT * FROM role";
+      connect();
+      statement = con.createStatement();
+      ResultSet resultSet = statement.executeQuery(sql);
+      while(resultSet.next()){
+          RoleBean roleBean = new RoleBean(resultSet.getString("roleid"), resultSet.getString("rolename"));
+          listRoles.add(roleBean);
+      }
+      statement.close();
+      resultSet.close();
+      con.close();
+      return listRoles;
   }
   
   
@@ -149,6 +161,7 @@ public class UserDao{
         }
         return userInfo;
     }
+   
 }
    
 

@@ -3,11 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.login.connection;
+package com.LoginSystem.connection;
 
+import com.LoginSystem.bean.InterfaceBean;
+import com.LoginSystem.bean.RoleBean;
+import com.LoginSystem.dao.RoleDao;
+import com.LoginSystem.dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.input.KeyCode;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +26,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author suren_v
  */
-public class logoutServlet extends HttpServlet {
+public class RoleServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,8 +40,6 @@ public class logoutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -49,8 +55,6 @@ public class logoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
-      
     }
 
     /**
@@ -64,7 +68,25 @@ public class logoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String roleName = request.getParameter("roleName");
+        String[] function = request.getParameterValues("FunctionInterfaceID");
+        RoleDao role = new RoleDao();
+        HttpSession session = request.getSession();
+        role.insertPrivilage(roleName, function);
+
+        ArrayList<RoleBean> roleDetails = new ArrayList<>();
+        
+        UserDao user = new UserDao();
+        try {
+            roleDetails = user.listAllRoles();
+            session.setAttribute("roleDetails", roleDetails);
+        } catch (SQLException ex) {
+            Logger.getLogger(RoleServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        //Saving the roles in a session
+        response.sendRedirect("role.jsp");
+
     }
 
     /**

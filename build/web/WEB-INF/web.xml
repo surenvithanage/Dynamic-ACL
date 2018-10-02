@@ -31,6 +31,14 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>com.LoginSystem.connection.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RoleServlet</servlet-name>
+        <servlet-class>com.LoginSystem.connection.RoleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PageServlet</servlet-name>
+        <servlet-class>com.LoginSystem.connection.PageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -58,6 +66,14 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RoleServlet</servlet-name>
+        <url-pattern>/RoleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PageServlet</servlet-name>
+        <url-pattern>/PageServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

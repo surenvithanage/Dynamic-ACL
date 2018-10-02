@@ -10,9 +10,13 @@ import com.LoginSystem.bean.InterfaceBean;
 import com.LoginSystem.bean.LoginBean;
 import com.LoginSystem.dao.LoginDao;
 import com.LoginSystem.util.DBConnection;
+import com.LoginSystem.util.PasswordSHA;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -71,6 +75,13 @@ public class LoginServlet extends HttpServlet {
         processRequest(request, response);
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String Encrypted = "";
+        //Password encryption
+        try {
+            Encrypted = PasswordSHA.getEncryptedPassword(password);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         session = request.getSession();         //Creating a session
         

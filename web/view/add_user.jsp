@@ -12,28 +12,30 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <jsp:include page="../inc/head.jsp"></jsp:include>
-    </head>
-    <body>
-        <div class="container-fluid">
-            <div class="col-md-3">
-
-            </div>
-            <div class="col-md-6 col-md-offset-1">
-                <form action="../user_management" method="post" style="margin-top: 100px;">
-                    <input type="hidden" name="actionType" value="addUser"/>
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control"  name="username" placeholder="Enter username">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control"  name="password" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <label for="roleid">role</label>
-                        <select class="form-control"  name="roleid">
-                            <option value="1">Admin</option>
-                            <option value="2">User</option>
+        </head>
+        <body>
+            <div class="container-fluid">
+                <div class="col-md-2">
+                    <jsp:include page="../inc/sidebar.jsp"></jsp:include>
+                </div>
+                <div class="col-md-6 col-md-offset-1">
+                    <h2>Add New User</h2>
+                    <form action="../user_management" method="post" style="margin-top: 100px;">
+                        <input type="hidden" name="actionType" value="addUser"/>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control"  name="username" placeholder="Enter username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control"  name="password" placeholder="Password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="roleid">role</label>
+                            <select class="form-control"  name="roleid" required>
+                            <c:forEach var="items" items="${roleData}">
+                                <option value="${items.getId()}"> <c:out value="${items.getRolename()}"></c:out></option>
+                            </c:forEach>
                         </select>
                     </div>
                     <input type="submit" class="btn btn-primary" value="Submit"/>

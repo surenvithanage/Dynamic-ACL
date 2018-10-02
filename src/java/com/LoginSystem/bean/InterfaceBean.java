@@ -14,11 +14,21 @@ public class InterfaceBean {
     private String name;
     private String description;
     private String url;
+    
+    
 
     public InterfaceBean(String interfaceid ,String name , String url ) {
         this.interfaceid = interfaceid;
         this.name = name;
         this.url = url;
+    }
+
+    public InterfaceBean(String name) {
+        this.name = name;
+    }
+
+    public InterfaceBean() {
+        
     }
 
     public String getUrl() {

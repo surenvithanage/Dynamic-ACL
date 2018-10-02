@@ -34,14 +34,16 @@
                             <div class="form-group">
                                 <label for="roleid">role</label>
                                 <select class="form-control"  name="roleid" >
-                                <c:if test="${item.getRoleid() == 1}">
-                                    <option value="1" selected>Admin</option>    
-                                    <option value="2"  >User</option>
-                                </c:if>
-                                <c:if test="${item.getRoleid() == 2}">
-                                    <option value="1" >Admin</option>    
-                                    <option value="2" selected >User</option>
-                                </c:if>
+                                <c:forEach var="role" items="${role}">
+                                    <c:choose>
+                                        <c:when test = "${role.getId() == item.getRoleid()}">
+                                            <option value="${role.getId()}"selected><c:out value="${role.getRolename()}"></c:out></option>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <option value="${role.getId()}"><c:out value="${role.getRolename()}"></c:out></option>
+                                        </c:otherwise>
+                                    </c:choose>     
+                                </c:forEach>
                             </select>
                         </div>
                         <input type="submit" class="btn btn-primary" value="Submit"/>
