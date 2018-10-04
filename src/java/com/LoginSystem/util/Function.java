@@ -19,10 +19,11 @@ import java.util.logging.Logger;
  * @author suren
  */
 public class Function {
+    static Connection con = DBConnection.createConnection();
     public static  ArrayList<FunctionBean> getPageFunctions(String roleid , String interfaceid){
         ArrayList<FunctionBean> pageFunctions = new ArrayList<>();
         try {
-            Connection con = DBConnection.createConnection();
+            
             Statement statement = con.createStatement();
             String sql = "select DISTINCT f.functionid, f.name  from privilage p , interface i , func_interface fi , function f where p.if_id = fi.if_id and fi.functionid = f.functionid and p.roleid ='"+roleid+"' and fi.interfaceid ='"+interfaceid+"'";
             ResultSet resultSet = statement.executeQuery(sql);
@@ -31,8 +32,7 @@ public class Function {
                 FunctionBean functionBean = new FunctionBean(resultSet.getString("f.functionid"),resultSet.getString("f.name"));
                 pageFunctions.add(functionBean);
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Function.class.getName()).log(Level.SEVERE, null, ex);
+       
         } catch (SQLException ex) {
             Logger.getLogger(Function.class.getName()).log(Level.SEVERE, null, ex);
         }

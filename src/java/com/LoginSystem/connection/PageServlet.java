@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -59,6 +60,80 @@ public class PageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String action = request.getParameter("functionInterfaceID");
+        String update = request.getParameter("InterfaceID");
+        PageDao pageDetails = new PageDao();
+        if (action != null) {
+            PageDao page = new PageDao();
+            page.DeleteFunctionDetails(action);
+            //ArrayList for functions
+            ArrayList<FunctionBean> functions = new ArrayList<>();
+            //PageDao object
+            PageDao pageFunction = new PageDao();
+            try {
+                functions = pageFunction.getFunctions();
+            } catch (NamingException ex) {
+                Logger.getLogger(PageServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //Interface Details
+            ArrayList<FunctionInterfaceBean> functionInterfaceDetails = new ArrayList<>();
+
+            functionInterfaceDetails = pageDetails.getFunctionInterfaceList();
+
+            ArrayList<InterfaceBean> pages = null;
+            LoginDao loginDetails = new LoginDao();
+            try {
+                pages = loginDetails.getPages();
+            } catch (NamingException ex) {
+                Logger.getLogger(PageServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            HttpSession session = request.getSession();
+            //Session
+            session.setAttribute("functionInterfaceDetails", functionInterfaceDetails);
+            session.setAttribute("functions", functions);
+            session.setAttribute("pages", pages);
+
+            response.sendRedirect("add_page.jsp");
+        }
+
+        if (update != null) {
+            ArrayList<FunctionInterfaceBean> updateDetails = new ArrayList<>();
+            ArrayList<FunctionBean> Func = new ArrayList<>();
+            updateDetails = pageDetails.loadAllPageData(update);
+            Func = pageDetails.PrintFunctions();
+            HttpSession session = request.getSession();
+
+            String[] resultSet = new String[Func.size()];
+            String func , updatedValue;
+            for (int i = 0; i < Func.size(); i++) {
+                func = Func.get(i).getName();
+                boolean result = false;
+                for (int j = 0; j < updateDetails.get(0).getFunction().size(); j++) {
+                    updatedValue = updateDetails.get(0).getFunction().get(j).getName();
+                    if(updatedValue.equals(func) )
+                    {
+                        result = true;
+                        break;
+                    }
+                   
+                }
+                
+                if(result == false)
+                    resultSet[i] = "0";
+                else
+                    resultSet[i] = "1";
+            }
+            
+            for (int i = 0; i < resultSet.length; i++) {
+                System.out.println(resultSet[i]);
+            }
+            
+            session.setAttribute("resultSet", resultSet);
+            session.setAttribute("Func", Func);
+            session.setAttribute("updateDetails", updateDetails);
+            response.sendRedirect("update_page.jsp");
+        }
 
     }
 
@@ -79,6 +154,7 @@ public class PageServlet extends HttpServlet {
             String name = request.getParameter("name");
             String url = request.getParameter("url");
             String description = request.getParameter("description");
+
             //Session
             HttpSession session = request.getSession();
             PageDao pageDao = new PageDao();
@@ -133,6 +209,8 @@ public class PageServlet extends HttpServlet {
 
             response.sendRedirect("role.jsp");
         } catch (SQLException ex) {
+            Logger.getLogger(PageServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NamingException ex) {
             Logger.getLogger(PageServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -161,7 +162,11 @@ public class UserServlet extends HttpServlet {
             ArrayList<FunctionBean> functions = new ArrayList<>();
             //PageDao object
             PageDao pageFunction = new PageDao();
-            functions = pageFunction.getFunctions();
+            try {
+                functions = pageFunction.getFunctions();
+            } catch (NamingException ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
             //Interface Details
             ArrayList<FunctionInterfaceBean> functionInterfaceDetails = new ArrayList<>();
             PageDao pageDetails = new PageDao();

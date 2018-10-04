@@ -23,11 +23,12 @@ import java.util.logging.Logger;
  * @author suren_v
  */
 public class RoleDao {
+    static  Connection con = DBConnection.createConnection();
 
     public ArrayList<FunctionInterfaceBean> getFunctionList() {
         ArrayList<FunctionInterfaceBean> getList = new ArrayList<>();
         try {
-            Connection con = DBConnection.createConnection();
+           
             Statement statement = con.createStatement();
             String sql = "SELECT i.name , f.name , fi.if_id FROM interface i , func_interface fi , function f where i.interfaceid = fi.interfaceid and f.functionid = fi.functionid";
             ResultSet resultSet = statement.executeQuery(sql);
@@ -35,8 +36,7 @@ public class RoleDao {
                 FunctionInterfaceBean functionInterface = new FunctionInterfaceBean(resultSet.getString("fi.if_id"), resultSet.getString("i.name"), resultSet.getString("f.name"));
                 getList.add(functionInterface);
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
+        
         } catch (SQLException ex) {
             Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -46,7 +46,7 @@ public class RoleDao {
     public ArrayList<InterfaceBean> getInterfaces(){
         ArrayList<InterfaceBean> list = new ArrayList<>();  
         try {
-            Connection con = DBConnection.createConnection();
+          
             Statement statement = con.createStatement();
             String sql = "select * from interface";
             ResultSet resultSet = statement.executeQuery(sql);
@@ -54,8 +54,7 @@ public class RoleDao {
                 InterfaceBean interfaces = new InterfaceBean(resultSet.getString("name"));
                 list.add(interfaces);
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
+     
         } catch (SQLException ex) {
             Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -65,7 +64,7 @@ public class RoleDao {
     public void insertPrivilage(String rolename, String[] function) {
         String roleID = "";
         try {
-            Connection con = DBConnection.createConnection();
+           
             String sql = "INSERT INTO role(rolename) VALUES (? )";
             PreparedStatement statement = con.prepareCall(sql);
             statement.setString(1, rolename);
@@ -86,9 +85,8 @@ public class RoleDao {
                 stat.executeUpdate();
             }
 
-            con.close();        //Closing the connection
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
+          
+        
         } catch (SQLException ex) {
             Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -13,7 +13,7 @@
         <title>JSP Page</title>
         <jsp:include page="../inc/head.jsp"></jsp:include>
         </head>
-        <body>
+        <body >
 
             <div class="container-fluid">
                 <div class="col-md-2">

@@ -30,24 +30,14 @@ public class UserDao{
     private String username;
     private String password;
     private String roleid;
-    private Connection con;
+     static Connection con =  DBConnection.createConnection();
     private Statement statement;
 
-  protected void connect() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/loginepic";
-        String username = "root";
-        String password = "";
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(url, username, password);
-        } catch (ClassNotFoundException e) {
-            throw new SQLException(e);
-        }
-    }
+    
   
   public boolean insertUser(UserBean userBean) throws SQLException{
       String sql = "INSERT INTO user(roleid , username , password) VALUES (?,?,?)";
-      connect();    //Connecting to the database
+      
       PreparedStatement statement = con.prepareStatement(sql);
       statement.setString(1, userBean.getRoleid());
       statement.setString(2,userBean.getUsername());
@@ -55,14 +45,14 @@ public class UserDao{
       
       boolean rowInserted = statement.executeUpdate() > 0;
       statement.close();
-      con.close();
+     
       return rowInserted;
   }
   
   public List<UserBean> listAllUsers() throws SQLException{
       List<UserBean> listUsers = new ArrayList<>();
       String sql = "SELECT * FROM user";
-      connect();
+   
       statement = con.createStatement();
       ResultSet resultSet = statement.executeQuery(sql);
       while(resultSet.next()){
@@ -71,14 +61,14 @@ public class UserDao{
       }
       statement.close();
       resultSet.close();
-      con.close();
+     
       return listUsers;
   }
   
   public ArrayList<RoleBean> listAllRoles() throws SQLException{
       ArrayList<RoleBean> listRoles = new ArrayList<>();
       String sql = "SELECT * FROM role";
-      connect();
+     
       statement = con.createStatement();
       ResultSet resultSet = statement.executeQuery(sql);
       while(resultSet.next()){
@@ -87,14 +77,14 @@ public class UserDao{
       }
       statement.close();
       resultSet.close();
-      con.close();
+     
       return listRoles;
   }
   
   
   public boolean deleteUser(UserBean userBean) throws SQLException{
       String sql = "DELETE FROM user WHERE userid = ?";
-      connect();    //Connecting to the database
+      
       PreparedStatement statement = con.prepareStatement(sql);
       statement.setString(1, userBean.getUserid());
       
@@ -107,7 +97,7 @@ public class UserDao{
   
   public boolean updateUser(UserBean userBean) throws SQLException{
       String sql = "UPDATE user set roleid = ? , username = ? , password = ? where userid = ?";
-      connect();
+    
       
       PreparedStatement statement = con.prepareStatement(sql);
       
@@ -118,14 +108,14 @@ public class UserDao{
       
       boolean rowUpdated = statement.executeUpdate() > 0 ;
       statement.close();
-      con.close();
+     
       return rowUpdated;
   }
   
   public ArrayList<FunctionBean> getPageFunctions(String roleid , String interfaceid){
         ArrayList<FunctionBean> pageFunctions = new ArrayList<>();
         try {
-            Connection con = DBConnection.createConnection();
+            
             Statement statement = con.createStatement();
             String sql = "select DISTINCT f.functionid, f.name  from privilage p , interface i , func_interface fi , function f where p.if_id = fi.if_id and fi.functionid = f.functionid and p.roleid ='"+roleid+"' and fi.interfaceid ='"+interfaceid+"'";
             ResultSet resultSet = statement.executeQuery(sql);
@@ -134,8 +124,7 @@ public class UserDao{
                 FunctionBean functionBean = new FunctionBean(resultSet.getString("f.functionid"),resultSet.getString("f.name"));
                 pageFunctions.add(functionBean);
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Function.class.getName()).log(Level.SEVERE, null, ex);
+       
         } catch (SQLException ex) {
             Logger.getLogger(Function.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -147,15 +136,14 @@ public class UserDao{
         ArrayList<LoginBean> userInfo = new ArrayList<>();
         try {
             String sql = "SELECT * FROM user where userid ='"+userid+"'";
-            Connection con = DBConnection.createConnection();
+          
             Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while(resultSet.next()){
                 LoginBean loginDetails = new LoginBean(resultSet.getString("userid"), resultSet.getString("roleid"), resultSet.getString("username"), resultSet.getString("password"));
                 userInfo.add(loginDetails);
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+      
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }

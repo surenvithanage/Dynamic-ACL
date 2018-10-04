@@ -14,6 +14,11 @@ public class PrivilageBean {
     private String roleid;
     private String if_id;
 
+    public PrivilageBean(String pid) {
+        this.pid = pid;
+    }
+
+    
     public PrivilageBean(String pid, String roleid, String if_id) {
         this.pid = pid;
         this.roleid = roleid;

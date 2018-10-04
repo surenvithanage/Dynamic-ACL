@@ -17,14 +17,37 @@ public class FunctionInterfaceBean {
     private String interfaceName;
     private String functionName;
     private ArrayList<FunctionBean> function;
+    private String url;
+    private String description;
+    
+    
 
     public FunctionInterfaceBean() {
     }
 
-    public FunctionInterfaceBean(String functionInterfaceId, String interfaceName, ArrayList<FunctionBean> f) {
+    public ArrayList<FunctionBean> getFunction() {
+        return function;
+    }
+    public FunctionInterfaceBean(String functionInterfaceId, String interfaceName, ArrayList<FunctionBean> f){
         this.functionInterfaceId = functionInterfaceId;
         this.interfaceName = interfaceName;
         this.function = f;
+    }
+    
+    public FunctionInterfaceBean(String functionInterfaceId, String interfaceName, ArrayList<FunctionBean> f , String url , String description) {
+        this.functionInterfaceId = functionInterfaceId;
+        this.interfaceName = interfaceName;
+        this.function = f;
+        this.url = url;
+        this.description = description;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public FunctionInterfaceBean(String functionInterfaceId, String interfaceName, String functionName) {

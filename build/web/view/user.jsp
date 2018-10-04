@@ -18,7 +18,7 @@
             <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css"/>
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
         </head>
-        <body>
+        <body >
             <div class="container-fluid">
                 <div class="col-md-2">
                 <jsp:include page="../inc/sidebar.jsp"></jsp:include>
@@ -85,7 +85,7 @@
                                                     <form method="POST" action="user_management">
                                                         <input type="hidden" name="getUserID" value="${user.getUserid()}"/>
                                                         <input type="hidden" name="actionDELETE" value="DELETE"/>
-                                                        <button type="submit" class="btn btn-danger btn-sm"><c:out value="${item.getName()}"></c:out></button>
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');"><c:out value="${item.getName()}"></c:out></button>
                                                         </form>
                                                 </c:if>
                                             </c:forEach>

@@ -3,12 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/suren_v/Documents/NetBeansProjects/LoginSystem/src/java/com/LoginSystem/dao/PageDao.java</file>
-            <file>file:/C:/Users/suren_v/Documents/NetBeansProjects/LoginSystem/src/java/com/LoginSystem/connection/PageServlet.java</file>
-            <file>file:/C:/Users/suren_v/Documents/NetBeansProjects/LoginSystem/web/add_page.jsp</file>
-            <file>file:/C:/Users/suren_v/Documents/NetBeansProjects/LoginSystem/src/java/com/LoginSystem/bean/FunctionInterfaceBean.java</file>
-            <file>file:/C:/Users/suren_v/Documents/NetBeansProjects/LoginSystem/src/java/com/LoginSystem/bean/FunctionBean.java</file>
-            <file>file:/C:/Users/suren_v/Documents/NetBeansProjects/LoginSystem/src/java/com/LoginSystem/connection/UserServlet.java</file>
+            <file>file:/C:/Users/suren_v/Documents/NetBeansProjects/LoginSystem/web/inc/head.jsp</file>
+            <file>file:/C:/Users/suren_v/Documents/NetBeansProjects/LoginSystem/web/view/home.jsp</file>
         </group>
     </open-files>
 </project-private>

@@ -61,16 +61,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach var="items" items="${functionDetails}">
+                                <c:forEach var="items" items="${functionInterfaceDetails}">
                                    
                                     <tr>
                                         <td><c:out value="${items.getInterfaceName()}"></c:out></td>
                                         <td>
+                                        <c:forEach var="func" items="${items.getFunction()}">
+                                            <strong><c:out value="${func.getName()}"></c:out></strong><br/>
+                                        </c:forEach>
+                                        </td>
                                         
-                                            <td>
-                                                <form method="POST" action="PageServlet">
+                                        <td><span class="pull-left" style="margin-right: 10px;">
+                                                <form method="GET" action="PageServlet">
+                                                    <input type="hidden" name="InterfaceID" value="<c:out value="${items.getFunctionInterfaceId()}"></c:out>">
+                                                    <button class="btn btn-success">Update</button>
+                                                </form></span>
+                                                <form method="GET" action="PageServlet">
                                                     <input type="hidden" name="functionInterfaceID" value="<c:out value="${items.getFunctionInterfaceId()}"></c:out>">
-                                                    <button class="btn btn-danger">Delete</button>
+                                                    <button class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>

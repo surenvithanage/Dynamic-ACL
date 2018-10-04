@@ -5,6 +5,8 @@
  */
 package com.LoginSystem.connection;
 
+import com.LoginSystem.dao.LoginDao;
+import com.LoginSystem.util.LoggerDetails;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -33,12 +35,14 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(false); //Fetch session object
- 
+        LoggerDetails logger = new LoggerDetails();
+        String username = session.getAttribute("username").toString();
+
         if(session!=null) //If session is not null
         {
+            logger.getLogger("logout Logger Details", "info", username, request);
             session.invalidate(); //removes all session attributes bound to the session
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.jsp");
-            requestDispatcher.forward(request, response);
+            response.sendRedirect("index.jsp");
             System.out.println("Logged out");
         }
     }
