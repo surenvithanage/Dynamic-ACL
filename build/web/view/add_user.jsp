@@ -12,6 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <jsp:include page="../inc/head.jsp"></jsp:include>
+        <link rel="stylesheet" href="../assets/css/body.css"/>
         </head>
         <body >
             <div class="container-fluid">
@@ -19,8 +20,8 @@
                     <jsp:include page="../inc/sidebar.jsp"></jsp:include>
                 </div>
                 <div class="col-md-6 col-md-offset-1">
-                    <h2>Add New User</h2>
-                    <form action="../user_management" method="post" style="margin-top: 100px;">
+                    <h2 style="color:white;">Add New User</h2>
+                    <form action="../user_management" method="post" style="margin-top: 100px;color:white;">
                         <input type="hidden" name="actionType" value="addUser"/>
                         <div class="form-group">
                             <label for="username">Username</label>
@@ -28,7 +29,7 @@
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" class="form-control"  name="password" placeholder="Password" required>
+                            <input type="password" class="form-control" minlength="5"  name="password" placeholder="Password" required>
                         </div>
                         <div class="form-group">
                             <label for="roleid">role</label>

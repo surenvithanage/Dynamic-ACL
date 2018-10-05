@@ -47,50 +47,27 @@ public class UserServlet extends HttpServlet {
     static String password;
     static String roleid;
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         String roleId = session.getAttribute("roleID").toString();
         functions = Function.getPageFunctions(roleId, interfaceId);
-        request.setAttribute("functions", functions);
+        session.setAttribute("functions", functions);
         listUser(request, response);
 
         request.getRequestDispatcher("view/user.jsp").forward(request, response);
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -136,12 +113,8 @@ public class UserServlet extends HttpServlet {
 
             //Passing the roles
             ArrayList<RoleBean> role = new ArrayList<>();
-            try {
-                role = userDetails.listAllRoles();
-                session.setAttribute("role", role);
-            } catch (SQLException ex) {
-                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            role = userDetails.listAllRoles();
+            session.setAttribute("role", role);
 
             request.setAttribute("getUserInfo", getUserInfo);
             request.getRequestDispatcher("view/update_user.jsp").forward(request, response);
@@ -171,50 +144,38 @@ public class UserServlet extends HttpServlet {
             ArrayList<FunctionInterfaceBean> functionInterfaceDetails = new ArrayList<>();
             PageDao pageDetails = new PageDao();
             functionInterfaceDetails = pageDetails.getFunctionInterfaceList();
-            
+
             //Session
             session.setAttribute("functionInterfaceDetails", functionInterfaceDetails);
             session.setAttribute("functions", functions);
 
             response.sendRedirect("add_page.jsp");
         } else if ("DISPLAYROLE".equals(DISPLAYROLE)) {
-            try {
-                // ROLE DETAILS 
-                ArrayList<RoleBean> roleDetails = new ArrayList<>();
-                UserDao user = new UserDao();
-                roleDetails = user.listAllRoles();
-
-                //Saving the roles in a session
-                session.setAttribute("roleDetails", roleDetails);
-
-                //Interface function Details
-                ArrayList<FunctionInterfaceBean> functionInterface = new ArrayList<>();
-                RoleDao roleDao = new RoleDao();
-                functionInterface = roleDao.getFunctionList();
-
-                //InterfaceNames
-                ArrayList<InterfaceBean> interfaceNames = new ArrayList<>();
-                RoleDao role = new RoleDao();
-                interfaceNames = role.getInterfaces();
-                session.setAttribute("interfaceNames", interfaceNames);     //Interface Names
-
-                //Saving the Functions in a session
-                session.setAttribute("functionInterface", functionInterface);
-                //Dispatcher
-                response.sendRedirect("role.jsp");
-            } catch (SQLException ex) {
-                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            // ROLE DETAILS
+            ArrayList<RoleBean> roleDetails = new ArrayList<>();
+            UserDao user = new UserDao();
+            roleDetails = user.listAllRoles();
+            //Saving the roles in a session
+            session.setAttribute("roleDetails", roleDetails);
+            //Interface function Details
+            ArrayList<FunctionInterfaceBean> functionInterface = new ArrayList<>();
+            RoleDao roleDao = new RoleDao();
+            functionInterface = roleDao.getFunctionList();
+            //InterfaceNames
+            ArrayList<InterfaceBean> interfaceNames = new ArrayList<>();
+            RoleDao role = new RoleDao();
+            interfaceNames = role.getInterfaces();
+            session.setAttribute("interfaceNames", interfaceNames);     //Interface Names
+            //Saving the Functions in a session
+            session.setAttribute("functionInterface", functionInterface);
+            //Dispatcher
+            response.sendRedirect("role.jsp");
         } else if ("add_user".equals(ADDUSER)) {
 
             ArrayList<RoleBean> roleData = new ArrayList<>();
-            try {
-                UserDao user = new UserDao();
-                roleData = user.listAllRoles();
-                session.setAttribute("roleData", roleData);
-            } catch (SQLException ex) {
-                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            UserDao user = new UserDao();
+            roleData = user.listAllRoles();
+            session.setAttribute("roleData", roleData);
             response.sendRedirect("view/add_user.jsp");
         } else {
 
@@ -232,11 +193,7 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+   
     @Override
     public String getServletInfo() {
         return "Short description";
@@ -244,7 +201,7 @@ public class UserServlet extends HttpServlet {
 
     protected void listUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-
+        HttpSession session = request.getSession();
         List<UserBean> listUsers = new ArrayList<>();
         UserDao user = new UserDao();
         listUsers = user.listAllUsers();
@@ -257,9 +214,9 @@ public class UserServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String roleid = request.getParameter("roleid");
+
         UserBean userBean = new UserBean(roleid, username, password);
         user.insertUser(userBean);
-
         processRequest(request, response);
     }
 

@@ -16,6 +16,10 @@ public class FunctionBean {
     private String id;
     private String name;
 
+    public FunctionBean(String id) {
+        this.id = id;
+    }
+
     public FunctionBean(String id, String name) {
         this.id = id;
         this.name = name;

@@ -17,6 +17,7 @@
             <script src= "https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
             <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css"/>
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+            <link rel="stylesheet" href="assets/css/body.css"/>
         </head>
         <body >
             <div class="container-fluid">
@@ -27,19 +28,19 @@
                     <div class="row">
                         <div class="row">
                             <center>
-                                <h1>User Management</h1>
+                                <h1  style="color : white;">User Management</h1>
                                 <span class="pull-left">
                                 <c:forEach var="item" items="${functions}">
                                     <c:if test="${item.getName() == 'Add'}">
                                         <form method="post" action="user_management">
                                             <input type="hidden" name="add_user" value="add_user"/>
-                                            <button type="submit" class="btn btn-primary"><c:out value="${item.getName()}"></c:out></button>
+                                            <button type="submit" class="btn btn-primary"  style="color : white;"><c:out value="${item.getName()}"></c:out></button>
                                             </form>
                                     </c:if>
 
                                     <c:if test="${item.getName() == 'Search'}">
                                         <form method="post" action="#">
-                                            <a style="margin-left: 20px; " class="btn btn-primary" href="#"><c:out value="${item.getName()}"></c:out></a>
+                                            <a style="margin-left: 20px; " class="btn btn-primary"  style="color : white;" href="#"><c:out value="${item.getName()}"></c:out></a>
                                             </form>
                                     </c:if>
                                 </c:forEach>
@@ -56,8 +57,8 @@
                     </div><br/><br/><br/>
                     <div class="col-md-12">
                         <!--                                    <a href="user_management?parameter=list" disabled>View Details</a>-->
-                        <table class="table" id="Table">
-                            <caption><h2>List of Users</h2></caption>
+                        <table class="table" id="Table"  style="color : white;">
+                            <caption><h2  style="color : white;">List of Users</h2></caption>
                             <thead>
                                 <tr>
                                     <th>UserId</th>

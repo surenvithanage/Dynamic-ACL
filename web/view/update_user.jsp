@@ -12,6 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <jsp:include page="../inc/head.jsp"></jsp:include>
+            <link rel="stylesheet" href="assets/css/body.css"/>
         </head>
         <body >
             <div class="container-fluid">
@@ -20,7 +21,7 @@
                 </div>
                 <div class="col-md-6 col-md-offset-1">
                 <c:forEach var="item" items="${getUserInfo}">
-                    <form action="user_management" method="post" style="margin-top: 100px;">
+                    <form action="user_management" method="post" style="margin-top: 100px;color:white;">
                         <input type="hidden" name="updateActionType" value="updateUser"/>
                         <input type="hidden" name="userid" value="<c:out value="${item.getUserid()}"></c:out>"/>
                             <div class="form-group">

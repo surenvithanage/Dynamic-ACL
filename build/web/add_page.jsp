@@ -17,6 +17,7 @@
             <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css"/>
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
             <title>JSP Page</title>
+            <link rel="stylesheet" href="assets/css/body.css"/>
         </head>
         <body>
             <div class="container-fluid">
@@ -27,7 +28,7 @@
                     <div class="col-md-7 col-md-offset-1">
 
                         <div class="row">
-                            <form method="POST" action="PageServlet" style="margin-top:50px;">
+                            <form method="POST" action="PageServlet" style="margin-top:50px;color : white;">
                                 <div class="form-group">
                                     <label for="name">Page Name</label>
                                     <input type="text" class="form-control" id="name" name="name" aria-describedby="name" placeholder="Enter name" required>
@@ -51,8 +52,8 @@
                         </form>
                     </div>
                     <div class="row">
-                        <h2 style="margin-bottom: 50px;margin-top: 100px;">Interface Details </h2>
-                        <table class="table" id="Table"">
+                        <h2 style="margin-bottom: 50px;margin-top: 100px;color : white;">Interface Details </h2>
+                        <table class="table" id="Table"style="color : white;">
                             <thead>
                                 <tr>
                                     <th>Interface Name</th>
@@ -62,20 +63,20 @@
                             </thead>
                             <tbody>
                                 <c:forEach var="items" items="${functionInterfaceDetails}">
-                                   
+
                                     <tr>
                                         <td><c:out value="${items.getInterfaceName()}"></c:out></td>
-                                        <td>
-                                        <c:forEach var="func" items="${items.getFunction()}">
-                                            <strong><c:out value="${func.getName()}"></c:out></strong><br/>
-                                        </c:forEach>
+                                            <td>
+                                            <c:forEach var="func" items="${items.getFunction()}">
+                                                <strong><c:out value="${func.getName()}"></c:out></strong><br/>
+                                            </c:forEach>
                                         </td>
-                                        
+
                                         <td><span class="pull-left" style="margin-right: 10px;">
                                                 <form method="GET" action="PageServlet">
                                                     <input type="hidden" name="InterfaceID" value="<c:out value="${items.getFunctionInterfaceId()}"></c:out>">
-                                                    <button class="btn btn-success">Update</button>
-                                                </form></span>
+                                                        <button class="btn btn-success">Update</button>
+                                                    </form></span>
                                                 <form method="GET" action="PageServlet">
                                                     <input type="hidden" name="functionInterfaceID" value="<c:out value="${items.getFunctionInterfaceId()}"></c:out>">
                                                     <button class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button>

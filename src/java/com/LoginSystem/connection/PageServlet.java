@@ -13,6 +13,7 @@ import com.LoginSystem.dao.LoginDao;
 import com.LoginSystem.dao.PageDao;
 import com.LoginSystem.dao.RoleDao;
 import com.LoginSystem.dao.UserDao;
+import java.awt.BorderLayout;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -32,37 +33,86 @@ import javax.servlet.http.HttpSession;
  */
 public class PageServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
         String action = request.getParameter("functionInterfaceID");
         String update = request.getParameter("InterfaceID");
+        String submitUpdate = request.getParameter("submitUpdate");
+
         PageDao pageDetails = new PageDao();
+        HttpSession session = request.getSession();
+        //Updating the records
+        if (submitUpdate != null) {
+            //Obtaining the values
+            String name = request.getParameter("name");
+            String description = request.getParameter("description");
+            String interfaceId = request.getParameter("interfaceId");
+            
+            ArrayList<FunctionBean> functionIdList, functionList , totFunction;
+
+            functionIdList = new ArrayList<>();
+            functionIdList = pageDetails.getFunctionId(interfaceId);
+            functionList = new ArrayList<>();
+            functionList = pageDetails.PrintFunctions();
+            String[] selectedId = request.getParameterValues("functions");
+
+            System.out.println(functionList.size() + " Total Function List ");
+            System.out.println(functionIdList.size() + " Selected function list");
+            System.out.println(selectedId.length + " newly");
+            
+            //Obtaining an arraylist from the selectId array
+            ArrayList select;         
+            select = new ArrayList();
+            
+            for (int i = 0; i < selectedId.length; i++) {
+                select.add(selectedId[i]);
+            }
+            
+            for (int i = 0; i < functionIdList.size(); i++) { 
+                select.remove(functionIdList.get(i).getId());   //Newly added function   
+            }
+            
+            String[] newlyAdded = new String[select.size()];
+            for (int i = 0; i < select.size(); i++) {
+                newlyAdded[i] = select.get(i).toString();
+            }
+            
+            //Newly added function
+            if(newlyAdded.length > 0 ){
+                
+            }
+            
+            //Updating if not permissions are selected or removed
+            if (selectedId.length == functionIdList.size()) {
+                boolean flag = false;
+                for (int i = 0; i < functionIdList.size(); i++) {
+                    if (selectedId[i].equals(functionIdList.get(i).getId())) {
+                        //Updating the page details only
+                        flag = true;
+                    }
+                }
+                if (flag == true) {
+                    pageDetails.updateInterfaces(name, description, interfaceId);
+                }
+            }
+
+            //Interface Details
+            ArrayList<FunctionInterfaceBean> functionInterfaceDetails = new ArrayList<>();
+            functionInterfaceDetails = pageDetails.getFunctionInterfaceList();
+            session.setAttribute("functionInterfaceDetails", functionInterfaceDetails);
+
+            response.sendRedirect("add_page.jsp");
+        }
+
+        //Deleting the records
         if (action != null) {
             PageDao page = new PageDao();
             page.DeleteFunctionDetails(action);
@@ -88,7 +138,6 @@ public class PageServlet extends HttpServlet {
                 Logger.getLogger(PageServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            HttpSession session = request.getSession();
             //Session
             session.setAttribute("functionInterfaceDetails", functionInterfaceDetails);
             session.setAttribute("functions", functions);
@@ -97,38 +146,34 @@ public class PageServlet extends HttpServlet {
             response.sendRedirect("add_page.jsp");
         }
 
+        //Retrieving the update records
         if (update != null) {
             ArrayList<FunctionInterfaceBean> updateDetails = new ArrayList<>();
             ArrayList<FunctionBean> Func = new ArrayList<>();
             updateDetails = pageDetails.loadAllPageData(update);
             Func = pageDetails.PrintFunctions();
-            HttpSession session = request.getSession();
 
             String[] resultSet = new String[Func.size()];
-            String func , updatedValue;
+            String func, updatedValue;
             for (int i = 0; i < Func.size(); i++) {
                 func = Func.get(i).getName();
                 boolean result = false;
                 for (int j = 0; j < updateDetails.get(0).getFunction().size(); j++) {
                     updatedValue = updateDetails.get(0).getFunction().get(j).getName();
-                    if(updatedValue.equals(func) )
-                    {
+                    if (updatedValue.equals(func)) {
                         result = true;
                         break;
                     }
-                   
+
                 }
-                
-                if(result == false)
+
+                if (result == false) {
                     resultSet[i] = "0";
-                else
+                } else {
                     resultSet[i] = "1";
+                }
             }
-            
-            for (int i = 0; i < resultSet.length; i++) {
-                System.out.println(resultSet[i]);
-            }
-            
+
             session.setAttribute("resultSet", resultSet);
             session.setAttribute("Func", Func);
             session.setAttribute("updateDetails", updateDetails);
@@ -137,14 +182,6 @@ public class PageServlet extends HttpServlet {
 
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -208,19 +245,12 @@ public class PageServlet extends HttpServlet {
             session.setAttribute("functionDetails", functionDetails);
 
             response.sendRedirect("role.jsp");
-        } catch (SQLException ex) {
-            Logger.getLogger(PageServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NamingException ex) {
             Logger.getLogger(PageServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

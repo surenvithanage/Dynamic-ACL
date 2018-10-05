@@ -23,10 +23,11 @@ import java.util.logging.Logger;
  * @author suren_v
  */
 public class RoleDao {
-    static  Connection con = DBConnection.createConnection();
+    
 
     public ArrayList<FunctionInterfaceBean> getFunctionList() {
         ArrayList<FunctionInterfaceBean> getList = new ArrayList<>();
+        Connection con = DBConnection.createConnection();
         try {
            
             Statement statement = con.createStatement();
@@ -39,12 +40,19 @@ public class RoleDao {
         
         } catch (SQLException ex) {
             Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return getList;
     }
     
     public ArrayList<InterfaceBean> getInterfaces(){
         ArrayList<InterfaceBean> list = new ArrayList<>();  
+        Connection con = DBConnection.createConnection();
         try {
           
             Statement statement = con.createStatement();
@@ -57,12 +65,19 @@ public class RoleDao {
      
         } catch (SQLException ex) {
             Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
 
     public void insertPrivilage(String rolename, String[] function) {
         String roleID = "";
+        Connection con = DBConnection.createConnection();
         try {
            
             String sql = "INSERT INTO role(rolename) VALUES (? )";
@@ -89,6 +104,12 @@ public class RoleDao {
         
         } catch (SQLException ex) {
             Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }

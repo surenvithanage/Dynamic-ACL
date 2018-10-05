@@ -24,13 +24,13 @@ import javax.naming.NamingException;
 public class LoginDao {
     Statement statement;
     ResultSet resultSet;
-    static Connection con =  DBConnection.createConnection();
+    
     String username = "";
     String password = "";
     String roleID ="";
     
     public boolean getAuthentication(LoginBean loginbean) throws NamingException{
- 
+        Connection con =  DBConnection.createConnection();
         username = loginbean.getUsername();
         password = loginbean.getPassword();
       
@@ -52,6 +52,12 @@ public class LoginDao {
        
         } catch (SQLException ex) {
             Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return false;
     }
@@ -59,6 +65,7 @@ public class LoginDao {
     public String getUsername(LoginBean loginBean) throws NamingException{
         username = loginBean.getUsername();
         password = loginBean.getPassword();
+        Connection con =  DBConnection.createConnection();
         String Username = "";
         try {
             
@@ -78,6 +85,12 @@ public class LoginDao {
         
         } catch (SQLException ex) {
             Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return Username;
     }
@@ -86,6 +99,7 @@ public class LoginDao {
         
         username = loginbean.getUsername();
         password = loginbean.getPassword();
+        Connection con =  DBConnection.createConnection();
         
         try {
           
@@ -101,6 +115,12 @@ public class LoginDao {
        
         } catch (SQLException ex) {
             Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return -99;
     }
@@ -109,7 +129,7 @@ public class LoginDao {
         
         username = loginbean.getUsername();
         password = loginbean.getPassword();
-        
+        Connection con =  DBConnection.createConnection();
         try {
           
             String sql = "SELECT * FROM user u , role r where u.roleid = r.roleid";
@@ -127,6 +147,12 @@ public class LoginDao {
         
         } catch (SQLException ex) {
             Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return -99;
     }
@@ -134,7 +160,7 @@ public class LoginDao {
     public ArrayList<LoginBean> getUserData(LoginBean loginbean) throws NamingException{
         username = loginbean.getUsername();
         password = loginbean.getPassword();
-        
+        Connection con =  DBConnection.createConnection();
         ArrayList<LoginBean> arraylist = new ArrayList<>();
         try {
             
@@ -153,6 +179,12 @@ public class LoginDao {
         
         } catch (SQLException ex) {
             Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         return arraylist;
@@ -160,6 +192,7 @@ public class LoginDao {
     
     public ArrayList<InterfaceBean> getPages() throws NamingException{
         ArrayList<InterfaceBean> page = new ArrayList<>();
+        Connection con =  DBConnection.createConnection();
          try {
            
             String sql = "select DISTINCT i.interfaceid, i.name , i.url from privilage p , func_interface fi , interface i where p.if_id = fi.if_id and fi.interfaceid = i.interfaceid and p.roleid = 1";
@@ -174,7 +207,13 @@ public class LoginDao {
        
         } catch (SQLException ex) {
             Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+         }
         
         return page;
     }

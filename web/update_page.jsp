@@ -12,6 +12,7 @@
         <title>JSP Page</title>
         <jsp:include page="inc/head.jsp"></jsp:include>
         <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+        <link rel="stylesheet" href="assets/css/body.css"/>
     </head>
     <body>
         <div class="container-fluid">
@@ -22,8 +23,7 @@
                     <div class="col-md-8 col-md-offset-1">
                         <div class="row">
                         <c:forEach var="items" items="${updateDetails}">
-                            <form method="POST" action="PageServlet" style="margin-top:50px;">
-
+                            <form method="GET" action="PageServlet" style="margin-top:50px;color:white;">
                                 <div class="form-group">
                                     <label for="name">Page Name</label>
                                     <input type="text" class="form-control" id="name" name="name" aria-describedby="name" value="<c:out value="${items.getInterfaceName()}"></c:out>"required>
@@ -38,28 +38,31 @@
                                     </div>
                                     <h3><strong>Functions</strong></h3>
                                     <div class="form-check">
-                                    <c:forEach var="items" items="${functions}" varStatus="result1">
+                                    <c:forEach var="item" items="${functions}" varStatus="result1">
                                         <c:forEach var="result" items="${resultSet}" varStatus="result2">
                                             <c:if test="${result1.count == result2.count}">
                                                 <c:if test="${result == 1}">
-                                                    <input type="checkbox" checked="true" class="form-check-input" name="functions" value="<c:out value="${items.getId()}"></c:out>">
-                                                    <label class="form-check-label"><c:out value="${items.getName()}"></c:out></label>
+                                                    <input type="checkbox" checked="true" class="form-check-input" name="functions" value="${item.getId()}">
+                                                    <label class="form-check-label"><c:out value="${item.getName()}"></c:out></label>
                                                 </c:if>
+                                                    
                                                 <c:if test="${result == 0}">
-                                                    <input type="checkbox" class="form-check-input" name="functions" value="<c:out value="${items.getId()}"></c:out>">
-                                                    <label class="form-check-label"><c:out value="${items.getName()}"></c:out></label>                                               
+                                                    <input type="checkbox" class="form-check-input" name="functions" value="${item.getId()}">
+                                                    <label class="form-check-label"><c:out value="${item.getName()}"></c:out></label>                                               
                                                 </c:if>
                                             </c:if>
                                         </c:forEach>
                                     </c:forEach>
                                 </div>
-                                <button type="submit" class="btn btn-success">Submit</button>
-                            </form>
+                                    <input type="hidden" name="interfaceId" value="<c:out value="${items.getFunctionInterfaceId()}"></c:out>"/>
+                                    <input type="hidden" name="submitUpdate" value="submitUpdate"/>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+
+                                </form>
                         </c:forEach>
                     </div>
                 </div>
             </div>
         </div>
-
     </body>
 </html>
