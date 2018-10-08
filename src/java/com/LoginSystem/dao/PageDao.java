@@ -469,43 +469,101 @@ public class PageDao {
         }
         return data;
     }
-    
+
     //Update an interface Detail
-    public void updateInterfaces(String name , String description , String interfaceId){
+    public void updateInterfaces(String name, String description, String interfaceId) {
+        Connection con = DBConnection.createConnection();
         try {
-            Connection con = DBConnection.createConnection();
             
             String sql = "UPDATE `interface` SET `name`=?,`description`=? WHERE interfaceid = ?";
             PreparedStatement statement = con.prepareCall(sql);
             statement.setString(1, name);
             statement.setString(2, description);
             statement.setString(3, interfaceId);
-            
             statement.executeUpdate();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PageDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PageDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
-    
-    public ArrayList<FunctionBean> getFunctionId(String id){
+
+    public ArrayList<FunctionBean> getFunctionId(String id) {
         ArrayList<FunctionBean> idList = new ArrayList<>();
+        Connection con = DBConnection.createConnection();
         try {
-            Connection con = DBConnection.createConnection();
             
-            String sql = "SELECT functionid from func_interface where interfaceid = '"+id+"'";
+
+            String sql = "SELECT functionid from func_interface where interfaceid = '" + id + "'";
             Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 FunctionBean funcion = new FunctionBean(resultSet.getString("functionid"));
                 idList.add(funcion);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PageDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PageDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        
+
         return idList;
+    }
+
+    public ArrayList<FunctionInterfaceBean> getFunctionInterfaceId(String id, String functionid) {
+        ArrayList<FunctionInterfaceBean> idList = new ArrayList<>();
+        Connection con = DBConnection.createConnection();
+        try {
+
+            String sql = "SELECT if_id from func_interface where interfaceid = '" + id + "' and functionid = '" + functionid + "'";
+            Statement statement = con.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                FunctionInterfaceBean funcion = new FunctionInterfaceBean(resultSet.getString("if_id"));
+                idList.add(funcion);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PageDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PageDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return idList;
+    }
+
+    public void InsertPID(String roleid, String if_id) {
+        Connection con = DBConnection.createConnection();
+        try {
+            
+            String query = "INSERT INTO privilage (roleid , if_id) VALUES (?,?)";
+            PreparedStatement stat = con.prepareCall(query);
+            stat.setString(1, roleid);
+            stat.setString(2, if_id);
+            stat.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(PageDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PageDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
 }

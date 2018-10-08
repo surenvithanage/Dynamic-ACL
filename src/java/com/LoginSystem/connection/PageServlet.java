@@ -8,6 +8,7 @@ package com.LoginSystem.connection;
 import com.LoginSystem.bean.FunctionBean;
 import com.LoginSystem.bean.FunctionInterfaceBean;
 import com.LoginSystem.bean.InterfaceBean;
+import com.LoginSystem.bean.PrivilageBean;
 import com.LoginSystem.bean.RoleBean;
 import com.LoginSystem.dao.LoginDao;
 import com.LoginSystem.dao.PageDao;
@@ -18,6 +19,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -55,54 +58,82 @@ public class PageServlet extends HttpServlet {
             String name = request.getParameter("name");
             String description = request.getParameter("description");
             String interfaceId = request.getParameter("interfaceId");
-            
-            ArrayList<FunctionBean> functionIdList, functionList , totFunction;
 
+            ArrayList<FunctionBean> functionIdList, functionList, totFunction;
+            //Selected Functions
             functionIdList = new ArrayList<>();
             functionIdList = pageDetails.getFunctionId(interfaceId);
+            //All the functions
             functionList = new ArrayList<>();
             functionList = pageDetails.PrintFunctions();
+            //Newly selected functions
             String[] selectedId = request.getParameterValues("functions");
 
-            System.out.println(functionList.size() + " Total Function List ");
-            System.out.println(functionIdList.size() + " Selected function list");
-            System.out.println(selectedId.length + " newly");
-            
-            //Obtaining an arraylist from the selectId array
-            ArrayList select;         
-            select = new ArrayList();
-            
+            //Converting the selected Id to an Arraylist
+            List<String> selectedNew = new CopyOnWriteArrayList<String>();
             for (int i = 0; i < selectedId.length; i++) {
-                select.add(selectedId[i]);
+                selectedNew.add(selectedId[i]);
             }
-            
-            for (int i = 0; i < functionIdList.size(); i++) { 
-                select.remove(functionIdList.get(i).getId());   //Newly added function   
+            //Converting the db saved id to CopyOnWriteArrayList as well
+            List<String> savedId = new CopyOnWriteArrayList<String>();
+            for (int i = 0; i < functionIdList.size(); i++) {
+                savedId.add(functionIdList.get(i).getId());
             }
-            
-            String[] newlyAdded = new String[select.size()];
-            for (int i = 0; i < select.size(); i++) {
-                newlyAdded[i] = select.get(i).toString();
-            }
-            
-            //Newly added function
-            if(newlyAdded.length > 0 ){
-                
-            }
-            
-            //Updating if not permissions are selected or removed
-            if (selectedId.length == functionIdList.size()) {
-                boolean flag = false;
-                for (int i = 0; i < functionIdList.size(); i++) {
-                    if (selectedId[i].equals(functionIdList.get(i).getId())) {
-                        //Updating the page details only
-                        flag = true;
+
+            for (String x : selectedNew) {
+                for (String y : savedId) {
+                    if (x.equals(y)) {
+                        selectedNew.remove(x);
+                        savedId.remove(y);
                     }
                 }
-                if (flag == true) {
-                    pageDetails.updateInterfaces(name, description, interfaceId);
+            }
+            //After deleting the items
+            for (int i = 0; i < savedId.size(); i++) {
+                System.out.println("Saved Id " + savedId.get(i));
+            }
+
+            for (int i = 0; i < selectedNew.size(); i++) {
+                System.out.println("Selected Id " + selectedNew.get(i));
+            }
+            //Saving a new Function 
+            ArrayList<FunctionInterfaceBean> ifIdValues = new ArrayList<>();
+            if (selectedNew.size() > 0) {
+                for (int i = 0; i < selectedNew.size(); i++) {
+                    pageDetails.insertFunctionInterface(interfaceId, selectedNew.get(i));
+                    ifIdValues = pageDetails.getFunctionInterfaceId(interfaceId, selectedNew.get(i));
                 }
             }
+
+            String roleid = session.getAttribute("roleID").toString();
+
+            for (int i = 0; i < ifIdValues.size(); i++) {
+                pageDetails.InsertPID(roleid, ifIdValues.get(i).getFunctionInterfaceId());
+            }
+            //Deleting a saved function
+            ArrayList<FunctionInterfaceBean> deletedIF_ID = new ArrayList<>();
+            if (savedId.size() > 0) {
+                for (int i = 0; i < savedId.size(); i++) {
+                    deletedIF_ID = pageDetails.getFunctionInterfaceId(interfaceId , savedId.get(i));
+                }
+            }
+            
+            //Getting the PID VALUES
+            ArrayList<PrivilageBean> pidID = new ArrayList();
+            for (int i = 0; i < deletedIF_ID.size(); i++) {
+                pidID = pageDetails.getPIDValues(deletedIF_ID.get(i).getFunctionInterfaceId());
+            }
+            
+            for (int i = 0; i < pidID.size(); i++) {
+                pageDetails.deletePID(pidID.get(i).getPid());
+            }
+            
+            for (int i = 0; i < deletedIF_ID.size(); i++) {
+                pageDetails.deleteIFID(deletedIF_ID.get(i).getFunctionInterfaceId());
+            }
+
+            //Updating the details
+            pageDetails.updateInterfaces(name, description, interfaceId);
 
             //Interface Details
             ArrayList<FunctionInterfaceBean> functionInterfaceDetails = new ArrayList<>();

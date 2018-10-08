@@ -19,8 +19,10 @@ public class FunctionInterfaceBean {
     private ArrayList<FunctionBean> function;
     private String url;
     private String description;
-    
-    
+
+    public FunctionInterfaceBean(String functionInterfaceId) {
+        this.functionInterfaceId = functionInterfaceId;
+    }
 
     public FunctionInterfaceBean() {
     }
