@@ -40,13 +40,13 @@ public class UserServlet extends HttpServlet {
 
     ArrayList<FunctionBean> functions;
     ArrayList<UserBean> users;
-    static String interfaceId;
-    static String USERID;
-    static String username;
-    static String userid;
-    static String password;
-    static String roleid;
-
+    String interfaceId;
+    String USERID;
+    String username;
+    String userid;
+    String password;
+    String roleid;
+    String status;
    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
@@ -74,7 +74,6 @@ public class UserServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         String roleId = session.getAttribute("roleID").toString();
-        System.out.println("Role id : " + roleId);
         String userID = request.getParameter("getUserID");
 
         USERID = request.getParameter("userID");
@@ -125,6 +124,11 @@ public class UserServlet extends HttpServlet {
                 userid = request.getParameter("userid");
                 password = request.getParameter("password");
                 roleid = request.getParameter("roleid");
+                status = request.getParameter("status");
+                
+                System.out.println(username + " " + userid + " " + password + " " + roleid + " " + status);
+                
+                System.out.println("Status is : " + status);
 
                 updateUser(request, response);
             } catch (SQLException ex) {
@@ -232,7 +236,7 @@ public class UserServlet extends HttpServlet {
     public void updateUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         UserDao user = new UserDao();
-        UserBean userBean = new UserBean(userid, roleid, username, password);
+        UserBean userBean = new UserBean(userid, roleid, username, password,status);
         user.updateUser(userBean);
         processRequest(request, response);
     }

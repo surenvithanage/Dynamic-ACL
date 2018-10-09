@@ -14,7 +14,20 @@ public class UserBean {
     private String roleid;
     private String username;
     private String password;
+    private String status;
 
+    public UserBean(String userid, String roleid, String username, String password, String status) {
+        this.userid = userid;
+        this.roleid = roleid;
+        this.username = username;
+        this.password = password;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    
     public UserBean(String userid, String roleid, String username, String password) {
         this.userid = userid;
         this.roleid = roleid;

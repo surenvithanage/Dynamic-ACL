@@ -53,22 +53,16 @@ public class LoginServlet extends HttpServlet {
             processRequest(request, response);
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            String Encrypted = "";
-            //Password encryption
-            try {
-                Encrypted = PasswordSHA.getEncryptedPassword(password);
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
             session = request.getSession();         //Creating a session
             
             LoginBean loginbean = new LoginBean();
+            LoginDao loginDetails = new LoginDao();
             
+            //Assigning
             loginbean.setUsername(username);
             loginbean.setPassword(password);
             
-            LoginDao loginDetails = new LoginDao();
+            
             
             String Users_name = loginDetails.getUsername(loginbean);
             session.setAttribute("username", username);
@@ -83,7 +77,6 @@ public class LoginServlet extends HttpServlet {
             //Logger Details
             LoggerDetails logger = new LoggerDetails();
             if(loginDetails.getAuthentication(loginbean) != false){     //Checking Authentication status of user
-                
                 
                 pages = loginDetails.getPages();     //Getting Page Details
                 

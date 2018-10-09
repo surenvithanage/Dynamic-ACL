@@ -37,13 +37,13 @@
                                             <button type="submit" class="btn btn-primary"  style="color : white;"><c:out value="${item.getName()}"></c:out></button>
                                             </form>
                                     </c:if>
-
                                     <c:if test="${item.getName() == 'Search'}">
-                                        <form method="post" action="#">
-                                            <a style="margin-left: 20px; " class="btn btn-primary"  style="color : white;" href="#"><c:out value="${item.getName()}"></c:out></a>
+                                        <form method="post" action="SearchServlet">
+                                            <button type="submit" class="btn btn-primary"  ><c:out value="${item.getName()}"></c:out></button>
                                             </form>
                                     </c:if>
                                 </c:forEach>
+
                             </span>
                             <form method="POST" action="user_management">
                                 <input type="hidden" name="actionRole" value="DISPLAYROLE"/>
@@ -65,6 +65,7 @@
                                     <th>RoleId</th>
                                     <th>Username</th>
                                     <th>Action</th>
+                                    <th>Activate/Deactivate</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -90,6 +91,10 @@
                                                         </form>
                                                 </c:if>
                                             </c:forEach>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" value="${user.getStatus()}" <c:if test="${user.getStatus() == 0 }">checked</c:if> disabled="True"  />Active User
+                                            <input type="checkbox" value="${user.getStatus()}" <c:if test="${user.getStatus() == 1 }">checked</c:if> disabled="True" />Deactivate User
                                         </td>
                                     </tr>
                                 </c:forEach> 

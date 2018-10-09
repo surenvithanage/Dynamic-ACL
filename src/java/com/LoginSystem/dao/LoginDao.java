@@ -9,6 +9,7 @@ import com.LoginSystem.bean.InterfaceBean;
 import com.LoginSystem.bean.LoginBean;
 import com.LoginSystem.util.DBConnection;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -34,22 +35,15 @@ public class LoginDao {
         username = loginbean.getUsername();
         password = loginbean.getPassword();
       
-        try {
-            
-                             
-            statement = con.createStatement();
-          
-            String sql = "SELECT * FROM user";
-            
+        try {                
+            statement = con.createStatement();         
+            String sql = "SELECT * FROM user where user_status = 0";           
             resultSet = statement.executeQuery(sql);
-
             while(resultSet.next()){
                 if(username.equals(resultSet.getString("username")) && password.equals(resultSet.getString("password"))){
                     return true;
                 }
-            }
-            
-       
+            }                   
         } catch (SQLException ex) {
             Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, ex);
         }finally{

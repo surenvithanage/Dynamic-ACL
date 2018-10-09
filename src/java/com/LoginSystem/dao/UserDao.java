@@ -71,7 +71,7 @@ public class UserDao {
             statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                UserBean userBean = new UserBean(resultSet.getString("userid"), resultSet.getString("roleid"), resultSet.getString("username"), resultSet.getString("password"));
+                UserBean userBean = new UserBean(resultSet.getString("userid"), resultSet.getString("roleid"), resultSet.getString("username"), resultSet.getString("password"),resultSet.getString("user_status"));
                 listUsers.add(userBean);
             }
 
@@ -140,14 +140,16 @@ public class UserDao {
         boolean rowUpdated = false;
         try {
 
-            String sql = "UPDATE user set roleid = ? , username = ? , password = ? where userid = ?";
+            String sql = "UPDATE user set roleid = ? , username = ? , password = ? , user_status = ? where userid = ?";
 
             PreparedStatement statement = con.prepareStatement(sql);
 
             statement.setString(1, userBean.getRoleid());
             statement.setString(2, userBean.getUsername());
             statement.setString(3, userBean.getPassword());
-            statement.setString(4, userBean.getUserid());
+            statement.setString(4, userBean.getStatus());
+            statement.setString(5, userBean.getUserid());
+            
 
             rowUpdated = statement.executeUpdate() > 0;
             statement.close();
@@ -200,7 +202,7 @@ public class UserDao {
             Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                LoginBean loginDetails = new LoginBean(resultSet.getString("userid"), resultSet.getString("roleid"), resultSet.getString("username"), resultSet.getString("password"));
+                LoginBean loginDetails = new LoginBean(resultSet.getString("userid"), resultSet.getString("roleid"), resultSet.getString("username"), resultSet.getString("password"),resultSet.getString("user_status"));
                 userInfo.add(loginDetails);
             }
 

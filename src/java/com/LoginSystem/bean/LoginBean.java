@@ -14,6 +14,22 @@ public class LoginBean {
     String roleid;
     String username;
     String password;
+    String status;
+
+    public LoginBean(String userid, String roleid, String username, String password, String status) {
+        this.userid = userid;
+        this.roleid = roleid;
+        this.username = username;
+        this.password = password;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    
+    
+    
     
     public LoginBean(){
         
