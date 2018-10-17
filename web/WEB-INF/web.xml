@@ -3,6 +3,34 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>com.LoginSystem.connection.LoginFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>FilterLoginOnly</filter-name>
+        <filter-class>com.LoginSystem.connection.FilterLoginOnly</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>FilterLoginOnly</filter-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/user_management</url-pattern>
+        <url-pattern>/deposit</url-pattern>
+        <url-pattern>/withdraw</url-pattern>
+        <url-pattern>/transfer</url-pattern>
+        <url-pattern>/statistic</url-pattern>
+        <url-pattern>/RoleServlet</url-pattern>
+        <url-pattern>/PageServlet</url-pattern>
+        <url-pattern>/SearchServlet</url-pattern>
+        <url-pattern>/LogoutServlet</url-pattern>
+        
+    </filter-mapping>
+    <listener>
+        <listener-class>com.LoginSystem.listener.User</listener-class>
+    </listener>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.LoginSystem.connection.LoginServlet</servlet-class>
@@ -49,6 +77,10 @@
         <servlet-name>SearchServlet</servlet-name>
         <servlet-class>com.LoginSystem.connection.SearchServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PasswordServlet</servlet-name>
+        <servlet-class>com.LoginSystem.connection.PasswordServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -89,9 +121,13 @@
         <servlet-name>SearchServlet</servlet-name>
         <url-pattern>/SearchServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PasswordServlet</servlet-name>
+        <url-pattern>/PasswordServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            5
         </session-timeout>
     </session-config>
 </web-app>

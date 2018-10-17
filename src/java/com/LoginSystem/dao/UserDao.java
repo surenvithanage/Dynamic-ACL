@@ -31,6 +31,7 @@ public class UserDao {
     private String username;
     private String password;
     private String roleid;
+    private int noOfRecords;
 
     private Statement statement;
 
@@ -38,13 +39,12 @@ public class UserDao {
         Connection con = DBConnection.createConnection();
         boolean rowInserted = false;
         try {
-            String sql = "INSERT INTO user(roleid , username , password) VALUES (?,?,?)";
-
+            String sql = "INSERT INTO user(roleid , username , password , reset_duration) VALUES (?,?,?,?)";
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setString(1, userBean.getRoleid());
             statement.setString(2, userBean.getUsername());
             statement.setString(3, userBean.getPassword());
-
+            statement.setInt(4,userBean.getDays());
             rowInserted = statement.executeUpdate() > 0;
             statement.close();
 
@@ -140,7 +140,7 @@ public class UserDao {
         boolean rowUpdated = false;
         try {
 
-            String sql = "UPDATE user set roleid = ? , username = ? , password = ? , user_status = ? where userid = ?";
+            String sql = "UPDATE user set roleid = ? , username = ? , password = ? , user_status = ? , reset_duration = ? where userid = ?";
 
             PreparedStatement statement = con.prepareStatement(sql);
 
@@ -148,7 +148,8 @@ public class UserDao {
             statement.setString(2, userBean.getUsername());
             statement.setString(3, userBean.getPassword());
             statement.setString(4, userBean.getStatus());
-            statement.setString(5, userBean.getUserid());
+            statement.setInt(5, userBean.getDays());
+            statement.setString(6, userBean.getUserid());
             
 
             rowUpdated = statement.executeUpdate() > 0;
@@ -202,7 +203,7 @@ public class UserDao {
             Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                LoginBean loginDetails = new LoginBean(resultSet.getString("userid"), resultSet.getString("roleid"), resultSet.getString("username"), resultSet.getString("password"),resultSet.getString("user_status"));
+                LoginBean loginDetails = new LoginBean(resultSet.getString("userid"), resultSet.getString("roleid"), resultSet.getString("username"), resultSet.getString("password"),resultSet.getString("user_status"),resultSet.getInt("reset_duration"));
                 userInfo.add(loginDetails);
             }
 
@@ -216,6 +217,70 @@ public class UserDao {
             }
         }
         return userInfo;
+    }
+    //Get total no of records
+    public void getTotalCount(){
+        noOfRecords = 0;
+        Connection con = DBConnection.createConnection();
+        try {
+            Statement statement = con.createStatement();
+            String sql = "SELECT * FROM user";
+            ResultSet resultSet = statement.executeQuery(sql);
+            if(!resultSet.next()){
+                System.out.println("No records were found");
+            }else{
+                do{
+                    ++noOfRecords;
+                }while(resultSet.next());
+            }
+                    } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    //Pagination
+    
+    public List<UserBean> viewAllUsers(int offset, int noOfRecords)
+    {
+        String query = "select SQL_CALC_FOUND_ROWS * from user limit " + offset + ", " + noOfRecords;
+        List<UserBean> list = new ArrayList<>();
+        UserBean userBean = null;
+        Connection con = DBConnection.createConnection();
+        try {
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()) {
+                userBean = new UserBean();
+                userBean.setUserid(rs.getString("userid"));
+                userBean.setRoleid(rs.getString("roleid"));
+                userBean.setUsername(rs.getString("username"));
+                userBean.setStatus(rs.getString("user_status"));
+                userBean.setDays(rs.getInt("reset_duration"));
+                list.add(userBean);
+            }
+            rs.close();
+             
+            rs = statement.executeQuery("SELECT FOUND_ROWS()");
+            if(rs.next())
+                this.noOfRecords = rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally
+        {
+            try {
+                if(statement != null)
+                    statement.close();
+                if(con != null)
+                    con.close();
+                } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+ 
+    
+    public int getNoOfRecords() {
+        return noOfRecords;
     }
 
 }

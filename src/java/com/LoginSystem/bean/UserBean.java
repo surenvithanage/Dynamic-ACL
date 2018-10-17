@@ -15,18 +15,61 @@ public class UserBean {
     private String username;
     private String password;
     private String status;
+    private int days;
+    private String duration;
+    
+    
+    public UserBean( String roleid, String username, String password, int days) {
+        this.roleid = roleid;
+        this.username = username;
+        this.password = password;
+        this.days = days;
+    }
 
-    public UserBean(String userid, String roleid, String username, String password, String status) {
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+    
+    public UserBean(String userid, String roleid, String username, String password, String status, int days) {
+        this.userid = userid;
+        this.roleid = roleid;
+        this.username = username;
+        this.password = password;
+        this.status = status;
+        this.days = days;
+    }
+
+
+    public UserBean(String userid, String roleid, String username, String password, String status  ) {
         this.userid = userid;
         this.roleid = roleid;
         this.username = username;
         this.password = password;
         this.status = status;
     }
+    
+    
 
     public String getStatus() {
         return status;
     }
+
+    public int  getDays() {
+        return days;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
     
     public UserBean(String userid, String roleid, String username, String password) {
         this.userid = userid;

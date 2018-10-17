@@ -18,6 +18,7 @@
             <link rel="stylesheet" href="assets/css/body.css"/>
         </head>
         <body>
+            <% String ErrorMsg = (String)request.getAttribute("Error"); %>
             <div class="row">
                 <div class="col-md-12">
                     <div class="col-md-2">
@@ -25,19 +26,51 @@
                     </div>
                     <div class="col-md-6 col-md-offset-1">
                         <table class="table" style="color:white;">
-                            <thead>
-                            <th>Role ID</th>
-                            <th>Role Name</th>
-                            </thead>
-                            <tbody>
-                            <c:forEach var="item" items="${roleDetails}">
-                                <tr>
-                                    <td><c:out value="${item.getId()}"></c:out></td>
-                                    <td><c:out value="${item.getRolename()}"></c:out></td>
-                                    </tr>
-                            </c:forEach>
-                        </tbody>
+                            <caption><h3>List of Roles</h3></caption>
+                            <tr>
+                                <th>Role ID</th>
+                                <th>Role Name</th>
+                                <th>Accessible Interface & Functions</th>
+
+                            </tr>
+                        <c:forEach var="role" items="${roleDetails}">
+                            <tr>
+                                <td><c:out value="${role.getId()}"></c:out></td>
+                                <td><c:out value="${role.getRolename()}"></c:out></td>
+                                    <td>
+                                        <table style="color:white;">
+                                        <c:forEach var="interfaces" items="${interfaceNames}" >
+
+                                            <tr>
+                                                <td><strong><c:out value="${interfaces.getName()}"></c:out></strong>&nbsp;&nbsp;&nbsp;</td>
+                                                    <td>
+                                                    <c:forEach var="roleAccess" items="${role.getRoleAccess_bean()}" >
+                                                        <c:if test="${roleAccess.getInterface_name()==interfaces.getName()}">
+                                                            <c:out value="${roleAccess.getFunction_name()}"></c:out>&nbsp;&nbsp;&nbsp;
+                                                        </c:if>  
+                                                    </c:forEach>
+                                                </td>
+                                            </tr>  
+                                        </c:forEach>
+
+                                    </table>
+                                </td>
+                                <td>
+                                    <form  action="RoleServlet" method="get">
+                                        <input type="hidden" name="action" value="update_role">
+                                        <input type="hidden" name="roleid" value="${role.getId()}">
+                                        <button type="submit" class="btn btn-success" value="${role.getId()}">Update</button>  
+                                    </form>
+                                    <form  action="RoleServlet" method="post" style="margin-top : 20px;">
+                                        <input type="hidden" name="action" value="delete_role">
+                                        <input type="hidden" name="roleid" value="${role.getId()}">
+                                        <button type="submit" class="btn btn-danger" value="${role.getId()}">Delete</button>  
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
                     </table>
+
                     <hr/>
                     <h3 style="text-align: center;color:white;">ROLE FORM</h3>
                     <form method="POST" action="RoleServlet">
@@ -60,13 +93,18 @@
                                 </c:forEach>
 
                             </div>
-
-                            <span class="pull-right" style="margin-top: 50px; margin-bottom: 100px;"><button type="submit" class="btn btn-success">Submit</button></span>
+                            <span class="pull-right" style="margin-top: 50px; margin-bottom: 235px;"><button type="submit" class="btn btn-success">Submit</button></span>
                     </form>
                 </div>
             </div>
-        </div>       
-
-    </body>
+        </div>
+    </div>       
+</div>
+</body>
 </html>
-
+<script type="text/javascript">
+    var msg = "<%= ErrorMsg %>" ;
+    if( msg !== 'null'){
+        alert(msg);
+    }
+</script>

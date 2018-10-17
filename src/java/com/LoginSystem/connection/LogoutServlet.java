@@ -32,9 +32,14 @@ public class LogoutServlet extends HttpServlet {
        
         if(session!=null) //If session is not null
         {
-            
-            logger.getLogger("logout Logger Details", "info", username, request);
+            session.removeAttribute("username");
             session.invalidate(); //removes all session attributes bound to the session
+            
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+            response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+            response.setDateHeader("Expires", 0);
+            logger.getLogger("logout Logger Details", "info", username, request);
+            
             response.sendRedirect("index.jsp");
             System.out.println("Logged out");
         }

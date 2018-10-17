@@ -5,6 +5,9 @@
  */
 package com.LoginSystem.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author suren_v
@@ -12,11 +15,36 @@ package com.LoginSystem.bean;
 public class RoleBean {
     private String id;
     private String rolename;
+    private ArrayList<InterfaceBean> interfaceBean;
+    private List<RoleAccessBean> roleAccessBean;
+
 
     public RoleBean(String id, String rolename) {
         this.id = id;
         this.rolename = rolename;
     }
+
+    public RoleBean(String id, String rolename, ArrayList<InterfaceBean> interfaceBean) {
+        this.id = id;
+        this.rolename = rolename;
+        this.interfaceBean = interfaceBean;
+    }
+
+    public ArrayList<InterfaceBean> getInterfaceBean() {
+        return interfaceBean;
+    }
+
+    public List<RoleAccessBean> getRoleAccess_bean() {
+        return roleAccessBean;
+    }
+
+    public RoleBean(String id, String rolename, List<RoleAccessBean> roleAccessBean) {
+        this.id = id;
+        this.rolename = rolename;
+        this.roleAccessBean = roleAccessBean;
+    }
+    
+    
 
     public RoleBean() {
     }

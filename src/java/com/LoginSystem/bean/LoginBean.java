@@ -15,6 +15,16 @@ public class LoginBean {
     String username;
     String password;
     String status;
+    int days;
+
+    public LoginBean(String userid, String roleid, String username, String password, String status, int days) {
+        this.userid = userid;
+        this.roleid = roleid;
+        this.username = username;
+        this.password = password;
+        this.status = status;
+        this.days = days;
+    }
 
     public LoginBean(String userid, String roleid, String username, String password, String status) {
         this.userid = userid;
@@ -24,12 +34,13 @@ public class LoginBean {
         this.status = status;
     }
 
+    public int getDays() {
+        return days;
+    }
+
     public String getStatus() {
         return status;
     }
-    
-    
-    
     
     public LoginBean(){
         

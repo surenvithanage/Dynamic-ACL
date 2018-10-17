@@ -16,7 +16,7 @@
                     <c:forEach var="item" items="${pages}">
                         <form action="${item.getUrl()}" method="post">
                             <input type="hidden" name="interfaceID" value="<c:out value="${item.getInterfaceid()}" ></c:out>">
-                            <button style="width : 100%; padding:25px 10px; margin-top:5px;" type="submit"><c:out value="${item.getName()}"></c:out></button>
+                            <button class="btn btn-warning" style="width : 100%; padding:25px 10px; margin-top:5px;" type="submit"><c:out value="${item.getName()}"></c:out></button>
                         </form>
                     </c:forEach>
                 </li>

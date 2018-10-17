@@ -565,5 +565,30 @@ public class PageDao {
             }
         }
     }
+    
+    public ArrayList<InterfaceBean> getInterfaces() throws NamingException {
+        ArrayList<InterfaceBean> interfaceBean = new ArrayList<>();
+        Connection con = DBConnection.createConnection();
+        try {
+
+            Statement statement = con.createStatement();
+            String sql = "SELECT * FROM interface";
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                InterfaceBean interfaceBean1 = new InterfaceBean(resultSet.getString("name"));
+                interfaceBean.add(interfaceBean1);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PageDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PageDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return interfaceBean;
+    }
 
 }

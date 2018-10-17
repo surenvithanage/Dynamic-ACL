@@ -38,7 +38,7 @@
                                     </div>
                                     <h3><strong>Functions</strong></h3>
                                     <div class="form-check">
-                                    <c:forEach var="item" items="${functions}" varStatus="result1">
+                                    <c:forEach var="item" items="${Func}" varStatus="result1">
                                         <c:forEach var="result" items="${resultSet}" varStatus="result2">
                                             <c:if test="${result1.count == result2.count}">
                                                 <c:if test="${result == 1}">

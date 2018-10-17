@@ -33,6 +33,10 @@
                                 <input type="password" class="form-control"  name="password" value="<c:out value="${item.getPassword()}"></c:out>">
                             </div>
                             <div class="form-group">
+                                <label for="Duration">Duration For Password Reset ( Days ) </label>
+                                <input type="text" class="form-control"  name="reset"  value="${item.getDays()}"/>
+                            </div>
+                            <div class="form-group">
                                 <input type="checkbox" name="status" value="0" <c:if test="${item.getStatus() == 0 }">checked</c:if>  />Active User
                             <input type="checkbox" name="status" value="1" <c:if test="${item.getStatus() == 1 }">checked</c:if> />Deactivate User
                             </div>

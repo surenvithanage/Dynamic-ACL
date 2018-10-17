@@ -47,7 +47,7 @@
                             <input type="submit" class="btn btn-success" value="Search" style="margin-top:20px;"/>
                         </form>
 
-                        <table class="table" style="color:white;">
+                        <table class="table" style="color:white;margin-bottom: 420px;">
                         <c:if test="${fn:length(result) gt 0}">
                             <thead>
                             <th>Name</th>

@@ -31,6 +31,13 @@ public class InterfaceBean {
         
     }
 
+    public InterfaceBean(String interfaceid, String name, String description, String url) {
+        this.interfaceid = interfaceid;
+        this.name = name;
+        this.description = description;
+        this.url = url;
+    }
+
     public String getUrl() {
         return url;
     }

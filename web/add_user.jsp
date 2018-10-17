@@ -11,17 +11,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <jsp:include page="../inc/head.jsp"></jsp:include>
-        <link rel="stylesheet" href="../assets/css/body.css"/>
+        <jsp:include page="inc/head.jsp"></jsp:include>
+        <link rel="stylesheet" href="assets/css/body.css"/>
         </head>
         <body >
             <div class="container-fluid">
                 <div class="col-md-2">
-                    <jsp:include page="../inc/sidebar.jsp"></jsp:include>
+                    <jsp:include page="inc/sidebar.jsp"></jsp:include>
                 </div>
                 <div class="col-md-6 col-md-offset-1">
                     <h2 style="color:white;">Add New User</h2>
-                    <form action="../user_management" method="post" style="margin-top: 100px;color:white;">
+                    <form action="user_management" method="post" style="margin-top: 100px;color:white;">
                         <input type="hidden" name="actionType" value="addUser"/>
                         <div class="form-group">
                             <label for="username">Username</label>
@@ -32,6 +32,10 @@
                             <input type="password" class="form-control" minlength="5"  name="password" placeholder="Password" required>
                         </div>
                         <div class="form-group">
+                            <label for="password">Duration For Password Reset ( Days ) </label>
+                            <input type="text" class="form-control"  name="reset" placeholder="Reset Duration" required>
+                        </div>
+                        <div class="form-group">
                             <label for="roleid">role</label>
                             <select class="form-control"  name="roleid" required>
                             <c:forEach var="items" items="${roleData}">
@@ -39,7 +43,7 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <input type="submit" class="btn btn-primary" value="Submit"/>
+                        <input type="submit" class="btn btn-primary" value="Submit" style="margin-bottom: 115px;"/>
                 </form>
             </div>
         </div>
